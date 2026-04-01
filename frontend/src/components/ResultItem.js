@@ -16,6 +16,15 @@ const ResultItem = ({ result }) => {
           {result.url}
         </p>
       </a>
+
+      <div className="text-xs text-gray-500 mb-2">
+        <span className="mr-2">Category: <strong>{result.category || 'General'}</strong></span>
+        <span className="mr-2">Domain: <strong>{result.domain || 'N/A'}</strong></span>
+        <span>Length: <strong>{result.content_length || result.content?.length || 0}</strong></span>
+      </div>
+
+      <p className="text-sm text-gray-700 mb-2">{result.snippet}</p>
+      <p className="text-xs text-gray-400 italic">{result.summary}</p>
     </div>
   );
 };
