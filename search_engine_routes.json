@@ -1,0 +1,84 @@
+{
+  "info": {
+    "name": "Search Engine API",
+    "_postman_id": "12345-abcde",
+    "description": "Test search API routes",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Test Server",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": [""]
+        }
+      }
+    },
+    {
+      "name": "Search - Java",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/search?q=java",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api","search"],
+          "query": [
+            {
+              "key": "q",
+              "value": "java"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Search - React",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/search?q=react",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api","search"],
+          "query": [
+            {
+              "key": "q",
+              "value": "react"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Search - Multiple Words",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/search?q=machine learning",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api","search"],
+          "query": [
+            {
+              "key": "q",
+              "value": "machine learning"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
