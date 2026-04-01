@@ -3,6 +3,7 @@ import SearchBar from '../components/SearchBar';
 import ResultsList from '../components/ResultsList';
 import Loader from '../components/Loader';
 import Pagination from '../components/Pagination';
+import AISummary from '../components/AISummary';
 import { searchDocuments } from '../services/api';
 
 const Home = () => {
@@ -35,69 +36,96 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
-      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
+    <div className="min-h-screen flex flex-col font-sans relative z-10">
+      {/* Header */}
+      <header className="bg-white/70 backdrop-blur-xl shadow-lg border-b border-white/30 sticky top-0 z-40 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 tracking-tight cursor-pointer" onClick={() => window.location.reload()}>
-              SearchEngine
-            </h1>
-            <div className="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-               API Connected
+            <div className="flex items-center space-x-3 group cursor-pointer" onClick={() => window.location.reload()}>
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 shadow-md">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 tracking-tight group-hover:from-blue-700 group-hover:to-indigo-700 transition-all duration-300">
+                SearchEngine
+              </h1>
+            </div>
+            <div className="flex items-center space-x-2 text-sm font-medium text-emerald-700 bg-emerald-50 px-4 py-2 rounded-full border border-emerald-200 shadow-sm">
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+              <span>API Connected</span>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="flex-grow flex flex-col items-center pt-12 pb-20 px-4 sm:px-6 lg:px-8 animate-fade-in-up">
+      {/* Main Content */}
+      <main className="flex-grow flex flex-col items-center pt-12 pb-20 px-4 sm:px-6 lg:px-8">
+        {/* Hero Section */}
         {!searchPerformed && (
-           <div className="text-center mb-10 mt-20">
-             <h2 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight mb-4">
-                Find what you need.
-             </h2>
-             <p className="text-xl text-gray-500 max-w-2xl mx-auto">
-                Discover documents, code snippets, and resources with our lightning-fast search API.
-             </p>
-           </div>
+          <div className="text-center mb-10 mt-20 animate-fade-in-up">
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 tracking-tight mb-6 leading-tight">
+              Find what you <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">need.</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              Discover documents, code snippets, and resources instantly with our lightning-fast search engine.
+            </p>
+          </div>
         )}
 
-        <div className={`w-full transition-all duration-500 ease-in-out ${searchPerformed ? 'mb-8' : 'mb-24 scale-105'}`}>
+        {/* Search Bar */}
+        <div className={`w-full transition-all duration-500 ease-in-out ${searchPerformed ? 'mb-8' : 'mb-24'}`}>
           <SearchBar onSearch={handleSearch} suggestionsList={suggestionsList} />
         </div>
 
-        {loading && <Loader message="Searching documents..." />}
+        {/* Loading State */}
+        {loading && <Loader message="Searching through documents..." />}
 
+        {/* Error State */}
         {error && (
-          <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-md w-full max-w-4xl mx-auto mt-6 shadow-sm">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+          <div className="bg-red-50 border border-red-200 rounded-xl p-6 w-full max-w-4xl mx-auto mt-6 shadow-md animate-fade-in-up">
+            <div className="flex items-start space-x-4">
+              <div className="flex-shrink-0 mt-0.5">
+                <svg className="h-6 w-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-red-800">Search Error</h3>
-                <p className="text-sm text-red-700 mt-1">{error}</p>
+              <div className="flex-1">
+                <h3 className="text-base font-semibold text-red-800">Search Error</h3>
+                <p className="text-sm text-red-700 mt-2">{error}</p>
               </div>
             </div>
           </div>
         )}
 
+        {/* Results Section */}
         {!loading && !error && searchPerformed && (
-          <div className="w-full max-w-4xl w-full mx-auto animate-fade-in-up mt-4">
-             <div className="text-sm text-gray-500 mb-4 px-2">
-                Showing results for <span className="font-semibold text-gray-900">"{query}"</span>
-             </div>
-             <ResultsList results={results} />
-             {/* Pagination is simplified here since backend does not support it natively yet */}
-             {results.length > 0 && <Pagination currentPage={1} totalPages={1} onPageChange={() => {}} />}
+          <div className="w-full max-w-4xl mx-auto animate-fade-in-up mt-4">
+            <div className="mb-6 px-2">
+              <p className="text-sm text-gray-600">
+                Found <span className="font-bold text-gray-900 text-base">{results.length}</span> result{results.length !== 1 ? 's' : ''} for
+                <span className="font-bold text-gray-900 ml-1 text-base">\"<span className="text-blue-600">{query}</span>\"</span>
+              </p>
+            </div>
+            
+            {/* AI Summary Section */}
+            {results.length > 0 && <AISummary query={query} results={results} />}
+            
+            {/* Search Results */}
+            <ResultsList results={results} />
+            {/* Pagination is simplified here since backend does not support it natively yet */}
+            {results.length > 0 && <Pagination currentPage={1} totalPages={1} onPageChange={() => {}} />}
           </div>
         )}
       </main>
 
-      <footer className="bg-white border-t border-gray-200 py-8">
-        <div className="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm">
-          &copy; {new Date().getFullYear()} Search Engine Application. React + Tailwind CSS.
+      {/* Footer */}
+      <footer className="bg-white/40 backdrop-blur-md border-t border-white/30 py-8 mt-auto">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <p className="text-gray-600 text-sm font-medium">
+            &copy; {new Date().getFullYear()} <span className="text-blue-600 font-semibold">SearchEngine</span>
+          </p>
+          <p className="text-gray-500 text-xs mt-2">Built with React, Tailwind CSS & ❤️</p>
         </div>
       </footer>
     </div>

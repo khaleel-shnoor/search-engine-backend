@@ -9,43 +9,51 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   }
 
   return (
-    <div className="flex justify-center items-center space-x-2 mt-8 py-4">
+    <div className="flex justify-center items-center space-x-3 mt-10 py-8 px-4 animate-fade-in-up bg-white/40 backdrop-blur-sm rounded-xl border border-white/30">
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className={`px-4 py-2 rounded-md font-medium transition-colors ${
+        className={`px-4 py-2.5 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 ${
           currentPage === 1
-            ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-            : 'bg-white text-blue-600 hover:bg-blue-50 border border-blue-200 shadow-sm'
+            ? 'bg-gray-100 text-gray-400 cursor-not-allowed opacity-50'
+            : 'btn-secondary hover:border-blue-400'
         }`}
       >
-        Previous
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+        <span>Previous</span>
       </button>
 
-      {pages.map((page) => (
-        <button
-          key={page}
-          onClick={() => onPageChange(page)}
-          className={`w-10 h-10 flex items-center justify-center rounded-md font-medium transition-colors ${
-            currentPage === page
-              ? 'bg-blue-600 text-white shadow-md'
-              : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200 hover:border-blue-300'
-          }`}
-        >
-          {page}
-        </button>
-      ))}
+      <div className="flex items-center space-x-1">
+        {pages.map((page) => (
+          <button
+            key={page}
+            onClick={() => onPageChange(page)}
+            className={`w-10 h-10 flex items-center justify-center rounded-lg font-semibold transition-all duration-200 ${
+              currentPage === page
+                ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
+                : 'bg-white text-gray-700 hover:bg-blue-50 border border-gray-200 hover:border-blue-300 shadow-sm'
+            }`}
+          >
+            {page}
+          </button>
+        ))}
+      </div>
 
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className={`px-4 py-2 rounded-md font-medium transition-colors ${
+        className={`px-4 py-2.5 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 ${
           currentPage === totalPages
-            ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-            : 'bg-white text-blue-600 hover:bg-blue-50 border border-blue-200 shadow-sm'
+            ? 'bg-gray-100 text-gray-400 cursor-not-allowed opacity-50'
+            : 'btn-secondary hover:border-blue-400'
         }`}
       >
-        Next
+        <span>Next</span>
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
       </button>
     </div>
   );
