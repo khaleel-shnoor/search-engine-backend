@@ -5,6 +5,9 @@ import fs from 'fs/promises';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    https: false,
+  },
   esbuild: {
     loader: 'jsx',
     include: /src\/.*\.jsx?$/,
