@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchBar from '../components/SearchBar';
 import ResultsList from '../components/ResultsList';
 import Loader from '../components/Loader';
 import Pagination from '../components/Pagination';
 import AISummary from '../components/AISummary';
-import { searchDocuments } from '../services/api';
+import { searchDocuments, checkHealth } from '../services/api';
 
 const Home = () => {
   const [results, setResults] = useState([]);
@@ -12,9 +12,25 @@ const Home = () => {
   const [error, setError] = useState(null);
   const [searchPerformed, setSearchPerformed] = useState(false);
   const [query, setQuery] = useState('');
+  const [apiStatus, setApiStatus] = useState('checking'); // 'checking' | 'connected' | 'disconnected'
   
   // Basic mock suggestions (could be fetched from API in full app)
   const suggestionsList = ['React', 'JavaScript', 'Machine Learning', 'Database', 'Python', 'Web Development'];
+
+  useEffect(() => {
+    const checkApi = async () => {
+      try {
+        await checkHealth();
+        setApiStatus('connected');
+      } catch {
+        setApiStatus('disconnected');
+      }
+    };
+
+    checkApi();
+    const interval = setInterval(checkApi, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSearch = async (searchQuery) => {
     if (!searchQuery) return;
@@ -51,9 +67,29 @@ const Home = () => {
                 SearchEngine
               </h1>
             </div>
-            <div className="flex items-center space-x-2 text-sm font-medium text-emerald-700 bg-emerald-50 px-4 py-2 rounded-full border border-emerald-200 shadow-sm">
-              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-              <span>API Connected</span>
+            <div className={`flex items-center space-x-2 text-sm font-medium px-4 py-2 rounded-full border shadow-sm ${
+              apiStatus === 'connected'
+                ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
+                : apiStatus === 'disconnected'
+                ? 'text-red-600 bg-red-50 border-red-200'
+                : 'text-gray-600 bg-gray-100 border-gray-200'
+            }`}>
+              <div
+                className={`w-2 h-2 rounded-full ${
+                  apiStatus === 'connected'
+                    ? 'bg-emerald-500 animate-pulse'
+                    : apiStatus === 'disconnected'
+                    ? 'bg-red-500'
+                    : 'bg-gray-500 animate-pulse'
+                }`}
+              ></div>
+              <span>
+                {apiStatus === 'connected'
+                  ? 'API Connected'
+                  : apiStatus === 'disconnected'
+                  ? 'API Disconnected'
+                  : 'Checking API...'}
+              </span>
             </div>
           </div>
         </div>
